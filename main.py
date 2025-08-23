@@ -19,6 +19,8 @@ from tools.xsstrike import run_xsstrike
 from tools.ipinfo import run_ipinfo
 from tools.amass import amass_wrapper
 from tools.dirsearch import dirsearch_wrapper
+from tools.gospider import gospider_wrapper, gospider_crawl_with_filter
+from tools.arjun import arjun_wrapper, arjun_bulk_scan, arjun_with_custom_payloads
 
 # Create server
 mcp = FastMCP(name="secops-mcp",
@@ -148,6 +150,129 @@ def dirsearch_wrapper(
 ) -> str:
     """Wrapper for running Dirsearch directory brute forcing."""
     return dirsearch_wrapper(url, extensions, wordlist)
+
+
+@mcp.tool()
+def gospider_scan(
+    target: str,
+    depth: int = 3,
+    concurrent: int = 10,
+    timeout: int = 10,
+    user_agent: Optional[str] = None,
+    headers: Optional[List[str]] = None,
+    include_subs: bool = False,
+    include_other_source: bool = False,
+    output_format: str = "json"
+) -> str:
+    """Wrapper for running Gospider web crawling."""
+    result = gospider_wrapper(
+        target=target,
+        depth=depth,
+        concurrent=concurrent,
+        timeout=timeout,
+        user_agent=user_agent,
+        headers=headers,
+        include_subs=include_subs,
+        include_other_source=include_other_source,
+        output_format=output_format
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def gospider_filtered_scan(
+    target: str,
+    extensions: Optional[List[str]] = None,
+    exclude_extensions: Optional[List[str]] = None,
+    filter_length: Optional[int] = None,
+    depth: int = 3,
+    concurrent: int = 10,
+    timeout: int = 10,
+    include_subs: bool = False
+) -> str:
+    """Wrapper for running Gospider web crawling with filtering capabilities."""
+    result = gospider_crawl_with_filter(
+        target=target,
+        extensions=extensions,
+        exclude_extensions=exclude_extensions,
+        filter_length=filter_length,
+        depth=depth,
+        concurrent=concurrent,
+        timeout=timeout,
+        include_subs=include_subs
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def arjun_scan(
+    url: str,
+    method: str = "GET",
+    wordlist: Optional[str] = None,
+    headers: Optional[List[str]] = None,
+    data: Optional[str] = None,
+    delay: int = 0,
+    timeout: int = 10,
+    threads: int = 25,
+    stable: bool = False,
+    output_format: str = "json"
+) -> str:
+    """Wrapper for running Arjun HTTP parameter discovery."""
+    result = arjun_wrapper(
+        url=url,
+        method=method,
+        wordlist=wordlist,
+        headers=headers,
+        data=data,
+        delay=delay,
+        timeout=timeout,
+        threads=threads,
+        stable=stable,
+        output_format=output_format
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def arjun_bulk_parameter_scan(
+    urls: List[str],
+    method: str = "GET",
+    wordlist: Optional[str] = None,
+    threads: int = 25,
+    stable: bool = False
+) -> str:
+    """Wrapper for running Arjun parameter discovery on multiple URLs."""
+    result = arjun_bulk_scan(
+        urls=urls,
+        method=method,
+        wordlist=wordlist,
+        threads=threads,
+        stable=stable
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def arjun_custom_parameter_scan(
+    url: str,
+    method: str = "GET",
+    custom_params: Optional[List[str]] = None,
+    wordlist: Optional[str] = None,
+    timeout: int = 10,
+    threads: int = 25,
+    stable: bool = False
+) -> str:
+    """Wrapper for running Arjun with custom parameter testing."""
+    result = arjun_with_custom_payloads(
+        url=url,
+        method=method,
+        custom_params=custom_params,
+        wordlist=wordlist,
+        timeout=timeout,
+        threads=threads,
+        stable=stable
+    )
+    return json.dumps(result, indent=2)
 
 
 if __name__ == "__main__":

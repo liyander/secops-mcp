@@ -15,7 +15,9 @@ A comprehensive security operations platform that integrates multiple security t
 - **Nuclei**: Fast and customizable vulnerability scanner
 - **FFUF**: Fast web fuzzer and content discovery tool
 - **Amass**: In-depth attack surface mapping and external asset discovery
+- **Arjun**: HTTP parameter discovery tool for finding hidden parameters
 - **Dirsearch**: Web path scanner
+- **Gospider**: Fast web spider for crawling and URL discovery
 - **Hashcat**: Advanced password recovery
 - **HTTPX**: Fast and multi-purpose HTTP toolkit
 - **IPInfo**: IP address information gathering
@@ -25,6 +27,51 @@ A comprehensive security operations platform that integrates multiple security t
 - **TLSX**: TLS/SSL scanning and analysis
 - **WFuzz**: Web application fuzzer
 - **XSStrike**: Advanced XSS detection and exploitation
+
+## Tool Categories
+
+### Web Application Security
+- **Nuclei**: Vulnerability scanning with custom templates
+- **FFUF**: Fast web fuzzing and content discovery
+- **WFuzz**: Web application fuzzing
+- **XSStrike**: XSS detection and exploitation
+- **SQLMap**: SQL injection testing and exploitation
+- **Arjun**: HTTP parameter discovery and testing
+- **Gospider**: Web crawling and URL discovery
+- **Dirsearch**: Directory and file enumeration
+
+### Network Security
+- **Nmap**: Network scanning and service enumeration
+- **HTTPX**: HTTP probing and analysis
+- **TLSX**: TLS/SSL configuration analysis
+
+### Reconnaissance
+- **Amass**: Attack surface mapping and asset discovery
+- **Subfinder**: Subdomain enumeration
+- **IPInfo**: IP address intelligence gathering
+
+### Cryptography
+- **Hashcat**: Password cracking and hash analysis
+
+## Recent Additions
+
+### Gospider Integration
+- **Web Crawling**: Automated website crawling and URL discovery
+- **Multiple Output Formats**: JSON and text output support
+- **Filtering Capabilities**: Extension-based filtering and content filtering
+- **Configurable Depth**: Customizable crawling depth and concurrency
+- **Subdomain Support**: Option to include subdomains in crawling
+- **Form Detection**: Automatic detection of HTML forms
+- **Secret Discovery**: Identification of potential sensitive information
+
+### Arjun Integration
+- **Parameter Discovery**: Find hidden HTTP parameters in web applications
+- **Multiple HTTP Methods**: Support for GET, POST, PUT, and other methods
+- **Bulk Scanning**: Scan multiple URLs simultaneously
+- **Custom Wordlists**: Use custom parameter wordlists
+- **Stable Mode**: Reduced false positives with stable scanning mode
+- **Custom Headers**: Support for custom HTTP headers and authentication
+- **Threading Support**: Configurable threading for faster scans
 
 ## Installation
 
@@ -86,6 +133,41 @@ A comprehensive security operations platform that integrates multiple security t
        "results": object (if success)
    }
    ```
+
+## Usage Examples
+
+### Gospider Web Crawling
+```python
+# Basic web crawling
+gospider_scan("https://example.com", depth=3, include_subs=True)
+
+# Filtered crawling for specific file types
+gospider_filtered_scan(
+    "https://example.com",
+    extensions=["js", "json", "xml"],
+    exclude_extensions=["png", "jpg", "css"]
+)
+```
+
+### Arjun Parameter Discovery
+```python
+# Basic parameter discovery
+arjun_scan("https://example.com/api", method="GET")
+
+# POST parameter discovery with custom data
+arjun_scan(
+    "https://example.com/login",
+    method="POST",
+    data="username=test&password=test",
+    stable=True
+)
+
+# Bulk parameter scanning
+arjun_bulk_parameter_scan([
+    "https://example.com/api/v1",
+    "https://example.com/api/v2"
+])
+```
 
 ## Tool Configuration
 
